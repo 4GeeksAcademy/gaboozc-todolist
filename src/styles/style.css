@@ -1,0 +1,77 @@
+.todo-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+
+  .task-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* Lista de tareas */
+.task-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Elemento de la lista */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* Cambio de color al pasar el ratón */
+.task-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Botón de eliminar */
+.delete-button {
+    background-color: transparent;
+    border: none;
+    color: #ff6b6b;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  /* Mostrar el botón de eliminar al pasar el ratón */
+  .task-item:hover .delete-button {
+    opacity: 1;
+  }
+  
+  /* Mensaje cuando no hay tareas */
+  .no-tasks {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    font-size: 14px;
+  }
+  

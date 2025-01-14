@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../../styles/style.css"; 
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]); 
-  const [newTask, setNewTask] = useState(""); 
-
+  const [newTask, setNewTask] = useState("");
  
-  const addTask = (event) => {
-    if (event.key === "Enter" && newTask.trim() !== "") {
-      setTasks([...tasks, newTask]);
-      setNewTask("");
-    }
-  };
-  const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
-  };
+const loadUser = async () => {
+  //linea 10 hace el fecth de la API
+  const respons = await fetch("https://playground.4geeks.com/todo/users/gaboozc")
+  //si no responde de manera adecuada lo sabremos y crearemos un usuario
+  if (!respons.ok) {
+    const respons = await fetch("https://playground.4geeks.com/todo/users/gaboozc", {
+      method: "post"
+    })
+    return
+  }
+  const data = await respons.json() 
+  setTasks (data.todos) 
+}
+useEffect(()=>{loadUser()}, [])
+const addTask = async (event) => {
+  if (event.key === "Enter" && newTask.trim() !== "") {
+      const newTaskObject = { label: newTask, is_done: false };
 
+
+          const resp = await fetch("https://playground.4geeks.com/todo/todos/gaboozc", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(newTaskObject),
+          });
+
+          const data = await resp.json();
+
+          setTasks([...tasks, data]); 
+          setNewTask(""); 
+  }
+};
+
+  const deleteTask = async (taskId) => {
+
+    try {
+        await fetch(`https://playground.4geeks.com/todo/todos/${taskId}`, {
+            method: "DELETE",
+        });
+
+        setTasks(tasks.filter((task) => taskId !== task.id )); 
+        console.log(`Task with ID ${taskId} deleted`);
+    } catch (error) {
+        console.error("Error deliting task:", error);
+    }
+};
   return (
     <div className="todo-container">
       <h1 className="title">To do list</h1>
@@ -34,10 +67,10 @@ const TodoList = () => {
         ) : (
           tasks.map((task, index) => (
             <li key={index} className="task-item">
-              {task}
+              {task.label}
               <button
                 className="delete-button"
-                onClick={() => deleteTask(index)}
+                onClick={() => deleteTask(task.id)}
               >
                 ✖
               </button>
